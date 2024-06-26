@@ -29,7 +29,6 @@ class _ResultsScreenState extends State<ResultsScreen> {
   void initState() {
     super.initState();
     _updateRoute();
-    _drawRoute();
   }
 
   void _onMapCreated(MapboxMapController controller) {
@@ -74,9 +73,8 @@ class _ResultsScreenState extends State<ResultsScreen> {
       ),
     );
     mapController.animateCamera(
-      CameraUpdate.newLatLngBounds(
-        bounds,
-      ),
+      CameraUpdate.newLatLngBounds(bounds,
+          bottom: 50, top: 50, left: 50, right: 50),
     );
   }
 
@@ -151,12 +149,41 @@ class _ResultsScreenState extends State<ResultsScreen> {
     );
     await searchBox.add(search);
     print('Search saved: $search');
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Route Saved'),
+          content: Text('Want to check it out?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop(); 
+              },
+            ),
+            TextButton(
+              child: Text('Yes'),
+              onPressed: () {
+                Navigator.of(context).pop(); 
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HistoryScreen(),
+                    ));
+              },
+            ),
+          ],
+        );
+      },
+    );
 
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HistoryScreen(),
-        ));
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => HistoryScreen(),
+    //   ),
+    // );
   }
 
   @override
@@ -186,7 +213,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
                     styleString: MapboxStyles.MAPBOX_STREETS,
                     initialCameraPosition: CameraPosition(
                       target: startLatLng ?? LatLng(37.7749, -122.4194),
-                      zoom: 10.0,
+                      zoom: 12.0, // Adjust initial zoom level as needed
                     ),
                     onMapCreated: _onMapCreated,
                     myLocationEnabled: true,
