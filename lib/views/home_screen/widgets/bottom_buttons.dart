@@ -1,4 +1,3 @@
-
 import 'package:ateam_machinetest/views/history_screen.dart';
 import 'package:ateam_machinetest/views/result_screen.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +22,6 @@ class BottomButtons extends StatelessWidget {
           Expanded(
             child: ElevatedButton(
               onPressed: () {
-                startController.clear();
-                endController.clear();
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -34,6 +31,7 @@ class BottomButtons extends StatelessWidget {
                     ),
                   ),
                 );
+                
               },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 15),
@@ -44,8 +42,7 @@ class BottomButtons extends StatelessWidget {
                 ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(
-                      color: Colors.transparent), // Remove border
+                  side: BorderSide(color: Colors.transparent), // Remove border
                 ),
                 elevation: 3,
               ),
@@ -58,8 +55,7 @@ class BottomButtons extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => HistoryScreen()),
+                  MaterialPageRoute(builder: (context) => HistoryScreen()),
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -71,8 +67,7 @@ class BottomButtons extends StatelessWidget {
                 ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(
-                      color: Colors.transparent), // Remove border
+                  side: BorderSide(color: Colors.transparent), // Remove border
                 ),
                 elevation: 3,
               ),

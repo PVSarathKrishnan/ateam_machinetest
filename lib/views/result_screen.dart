@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:ateam_machinetest/model/search.dart';
 import 'package:ateam_machinetest/utils/style.dart';
-import 'package:http/http.dart' as http;
+import 'package:ateam_machinetest/views/history_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:mapbox_gl/mapbox_gl.dart';
-
 import 'package:hive/hive.dart';
 
 class ResultsScreen extends StatefulWidget {
@@ -19,8 +19,6 @@ class ResultsScreen extends StatefulWidget {
 
 class _ResultsScreenState extends State<ResultsScreen> {
   late MapboxMapController mapController;
-  final startController = TextEditingController();
-  final endController = TextEditingController();
   LatLng? startLatLng;
   LatLng? endLatLng;
   double? distance;
@@ -30,9 +28,8 @@ class _ResultsScreenState extends State<ResultsScreen> {
   @override
   void initState() {
     super.initState();
-    startController.text = widget.startLocation;
-    endController.text = widget.endLocation;
     _updateRoute();
+    _drawRoute();
   }
 
   void _onMapCreated(MapboxMapController controller) {
@@ -77,7 +74,9 @@ class _ResultsScreenState extends State<ResultsScreen> {
       ),
     );
     mapController.animateCamera(
-      CameraUpdate.newLatLngBounds(bounds),
+      CameraUpdate.newLatLngBounds(
+        bounds,
+      ),
     );
   }
 
@@ -93,8 +92,8 @@ class _ResultsScreenState extends State<ResultsScreen> {
   }
 
   Future<void> _updateRoute() async {
-    startLatLng = await _getLatLngFromAddress(startController.text);
-    endLatLng = await _getLatLngFromAddress(endController.text);
+    startLatLng = await _getLatLngFromAddress(widget.startLocation);
+    endLatLng = await _getLatLngFromAddress(widget.endLocation);
     if (startLatLng != null && endLatLng != null) {
       distance = await _calculateDistance(startLatLng!, endLatLng!);
       setState(() {
@@ -146,12 +145,18 @@ class _ResultsScreenState extends State<ResultsScreen> {
   Future<void> _saveSearch() async {
     final searchBox = await Hive.openBox<Search>('searches');
     final search = Search(
-      startController.text,
-      endController.text,
+      widget.startLocation,
+      widget.endLocation,
       DateTime.now(),
     );
     await searchBox.add(search);
     print('Search saved: $search');
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HistoryScreen(),
+        ));
   }
 
   @override
@@ -159,6 +164,16 @@ class _ResultsScreenState extends State<ResultsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Route Finder'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _updateRoute(); // Refresh route when replay button is pressed
+              });
+            },
+            icon: Icon(Icons.replay_outlined),
+          ),
+        ],
       ),
       body: CustomScrollView(
         slivers: [
@@ -170,7 +185,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
                     accessToken: mapboxAccessToken,
                     styleString: MapboxStyles.MAPBOX_STREETS,
                     initialCameraPosition: CameraPosition(
-                      target: LatLng(37.7749, -122.4194), // Default location
+                      target: startLatLng ?? LatLng(37.7749, -122.4194),
                       zoom: 10.0,
                     ),
                     onMapCreated: _onMapCreated,
@@ -182,11 +197,18 @@ class _ResultsScreenState extends State<ResultsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Start: ${startController.text}",style: text_style_normal),
-                      Text("End: ${endController.text}",style: text_style_normal),
                       Text(
-                          "Distance: ${distance?.toStringAsFixed(2) ?? 'N/A'} km",style: text_style_normal,),
-                     
+                        "Start: ${widget.startLocation}",
+                        style: text_style_normal,
+                      ),
+                      Text(
+                        "End: ${widget.endLocation}",
+                        style: text_style_normal,
+                      ),
+                      Text(
+                        "Distance: ${distance?.toStringAsFixed(2) ?? 'N/A'} km",
+                        style: text_style_normal,
+                      ),
                       ElevatedButton(
                         onPressed: _saveSearch,
                         child: const Text('Save Route'),
