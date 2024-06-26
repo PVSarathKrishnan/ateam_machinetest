@@ -1,4 +1,4 @@
-import 'package:ateam_machinetest/search_provider.dart';
+import 'package:ateam_machinetest/view_model/search_view_model.dart';
 import 'package:ateam_machinetest/views/result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,12 +10,12 @@ class HistoryScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Saved Searches'),
+        title: const Text('Saved Searches'),
       ),
       body: Consumer<SearchProvider>(
         builder: (context, searchProvider, child) {
           return searchProvider.searches.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text(
                     'No saved searches yet.',
                     style: TextStyle(fontSize: 18),
@@ -35,7 +35,7 @@ class HistoryScreen extends StatelessWidget {
                         child: ListTile(
                           title: Text(
                             '${search.startLocation} to ${search.endLocation}',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           subtitle: Text(
                             'Searched on ${_formatDate(search.searchDate)}',
