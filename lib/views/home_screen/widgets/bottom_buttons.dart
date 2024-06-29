@@ -1,5 +1,5 @@
-import 'package:ateam_machinetest/views/history_screen.dart';
-import 'package:ateam_machinetest/views/result_screen.dart';
+import 'package:ateam_machinetest/views/history_screen/history_screen.dart';
+import 'package:ateam_machinetest/views/result_screen/result_screen.dart';
 import 'package:flutter/material.dart';
 
 class BottomButtons extends StatelessWidget {
@@ -22,7 +22,7 @@ class BottomButtons extends StatelessWidget {
           Expanded(
             child: ElevatedButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ResultsScreen(
@@ -38,11 +38,11 @@ class BottomButtons extends StatelessWidget {
                 textStyle: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white, // Text color for gradient
+                  color: Colors.white,
                 ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(color: Colors.transparent), // Remove border
+                  side: BorderSide(color: Colors.transparent),
                 ),
                 elevation: 3,
               ),
@@ -63,11 +63,11 @@ class BottomButtons extends StatelessWidget {
                 textStyle: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white, // Text color for gradient
+                  color: Colors.white, 
                 ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(color: Colors.transparent), // Remove border
+                  side: BorderSide(color: Colors.transparent), 
                 ),
                 elevation: 3,
               ),

@@ -1,5 +1,5 @@
 import 'package:ateam_machinetest/view_model/search_view_model.dart';
-import 'package:ateam_machinetest/views/result_screen.dart';
+import 'package:ateam_machinetest/views/result_screen/result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

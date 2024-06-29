@@ -1,11 +1,11 @@
-import 'package:ateam_machinetest/utils/style.dart';
-import 'package:ateam_machinetest/views/home_screen/widgets/bottom_buttons.dart';
-import 'package:ateam_machinetest/views/home_screen/widgets/user_details.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:ateam_machinetest/utils/style.dart';
+import 'package:ateam_machinetest/views/home_screen/widgets/bottom_buttons.dart';
+import 'package:ateam_machinetest/views/home_screen/widgets/user_details.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -29,15 +29,11 @@ class _HomeScreenState extends State<HomeScreen> {
             data['features'].map((feature) => feature['place_name']));
       } else {
         // Handle server errors
-        if (kDebugMode) {
-          print('Server error: ${response.statusCode}');
-        }
+        print('Server error: ${response.statusCode}');
       }
     } catch (e) {
       // Handle network errors
-      if (kDebugMode) {
-        print('Network error: $e');
-      }
+      print('Network error: $e');
     }
     return [];
   }
@@ -79,8 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           controller: textEditingController,
                           focusNode: focusNode,
                           style:
-                              const TextStyle(color: Colors.blue), // Text color
-                          cursorColor: Colors.blue, // Cursor color
+                              const TextStyle(color: Colors.blue), 
+                          cursorColor: Colors.blue, 
                           decoration: InputDecoration(
                             suffixIcon: const Icon(Icons.location_on),
                             labelText: 'Start Location',
@@ -88,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.blue), // Label text color
                             filled: true,
-                            fillColor: Colors.white,
+                            fillColor: Colors.white.withOpacity(0.8),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: Colors.blue
@@ -137,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.blue), // Label text color
                             filled: true,
-                            fillColor: Colors.white,
+                            fillColor: Colors.white.withOpacity(0.8),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: Colors.blue
@@ -162,13 +158,22 @@ class _HomeScreenState extends State<HomeScreen> {
               BottomButtons(
                   startController: startController,
                   endController: endController),
-
-                  //to avoid white space
+              // to avoid white space
               SizedBox(
                 height: screenHeight / 6,
               ),
-              Column(
-                children: [Text("Powered by MapBox",style: text_style_header,), Image.network("https://imgs.search.brave.com/Q4Lf9z9MYJNoG2158OOOinswv6cBLxKidbCFhbdQ8Sc/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9sb2dv/d2lrLmNvbS9jb250/ZW50L3VwbG9hZHMv/aW1hZ2VzL21hcGJv/eDg2ODIubG9nb3dp/ay5jb20ud2VicA",height: screenHeight/6,width: screenHeight/6,)],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Powered by",
+                    style: text_style_header,
+                  ),
+                  Image.asset(
+                    "lib/assets/mblogo.png",
+                    width: screenHeight / 6,
+                  ),
+                ],
               )
             ],
           ),
